@@ -25,7 +25,7 @@ $ mkdir -p explore
 $ bin/grow -output explore -input output-XXXXXXX.obj -lastonly -iteration 128 -worldsize 300
 ```
 
-### Demos
+### Demos - Rendered with [Blender](https://www.blender.org/) (Cycles)
 
 ![demo](https://i.gyazo.com/48f9e3d10fca5472f4971fc672896717.png)
 
@@ -33,7 +33,10 @@ $ bin/grow -output explore -input output-XXXXXXX.obj -lastonly -iteration 128 -w
 
 ![demo](https://media.giphy.com/media/L3L6fgN9HO6mj5AokY/giphy.gif)
 
-![demo](https://media.giphy.com/media/YOBFy0WPAfrueMDYvz/giphy.gif)
+![demo](https://media.giphy.com/media/ZG0yw17IqGS9yZOGo0/giphy.gif)
+
+![demo](https://media.giphy.com/media/eMmgOUTYCJRZzGiwbb/giphy.gif)
+
 
 More examples :
 - https://www.youtube.com/watch?v=W0iA-pO_XaU
