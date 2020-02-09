@@ -7,34 +7,34 @@ import (
 	"strings"
 )
 
-// ObjWriter write an obj file
-type ObjWriter struct {
+// Writer write an obj file
+type Writer struct {
 	lines       strings.Builder
 	vertices    []string
 	verticesIdx map[string]int
 	faces       map[int][][4]int
 }
 
-// NewObjWriter create a new writer
-func NewObjWriter() *ObjWriter {
-	writer := new(ObjWriter)
+// NewWriter create a new writer
+func NewWriter() *Writer {
+	writer := new(Writer)
 	writer.faces = make(map[int][][4]int)
 	writer.verticesIdx = make(map[string]int)
 	return writer
 }
 
 // AddMtlLib to obj file
-func (writer *ObjWriter) AddMtlLib(filename string) {
+func (writer *Writer) AddMtlLib(filename string) {
 	fmt.Fprintf(&writer.lines, "mtllib %s\n", filename)
 }
 
 // AddComment add a comment
-func (writer *ObjWriter) AddComment(comment string) {
+func (writer *Writer) AddComment(comment string) {
 	fmt.Fprintf(&writer.lines, "# %s\n", comment)
 }
 
 // AddVertex add a new vertex
-func (writer *ObjWriter) AddVertex(x int, y int, z int) int {
+func (writer *Writer) AddVertex(x int, y int, z int) int {
 	line := fmt.Sprintf("v %d %d %d", x, y, z)
 
 	idx, ok := writer.verticesIdx[line]
@@ -49,7 +49,7 @@ func (writer *ObjWriter) AddVertex(x int, y int, z int) int {
 }
 
 // AddCube to export
-func (writer *ObjWriter) AddCube(x int, y int, z int, state int) {
+func (writer *Writer) AddCube(x int, y int, z int, state int) {
 	var idx [4]int
 
 	idx[0] = writer.AddVertex(x, y+1, z+1)
@@ -90,7 +90,7 @@ func (writer *ObjWriter) AddCube(x int, y int, z int, state int) {
 }
 
 // WriteToFile of your choice
-func (writer *ObjWriter) WriteToFile(filename string) {
+func (writer *Writer) WriteToFile(filename string) {
 	f, err := os.Create(filename)
 	if err != nil {
 		panic(err)

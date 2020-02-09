@@ -10,11 +10,11 @@ import (
 	"strings"
 )
 
-type ObjReader struct {
+type Reader struct {
 	Filename string
 }
 
-func (reader *ObjReader) initSeed(size int) [][][]int {
+func (reader *Reader) initSeed(size int) [][][]int {
 	seed := make([][][]int, size)
 
 	for x := range seed {
@@ -27,7 +27,7 @@ func (reader *ObjReader) initSeed(size int) [][][]int {
 	return seed
 }
 
-func (reader *ObjReader) initRuleSet(maxStates int) [][][][]int {
+func (reader *Reader) initRuleSet(maxStates int) [][][][]int {
 	states := make([][][][]int, maxStates+1)
 
 	for state := 0; state <= maxStates; state++ {
@@ -45,7 +45,8 @@ func (reader *ObjReader) initRuleSet(maxStates int) [][][][]int {
 	return states
 }
 
-func (reader *ObjReader) ExtractSeed(size int, offset int) [][][]int {
+// ExtractSeed extract the seed from obj file
+func (reader *Reader) ExtractSeed(size int, offset int) [][][]int {
 	file, err := os.Open(reader.Filename)
 	if err != nil {
 		log.Panicf("failed reading file: %s", err)
@@ -82,20 +83,28 @@ func (reader *ObjReader) ExtractSeed(size int, offset int) [][][]int {
 	return nil
 }
 
-func (reader ObjReader) ExtractRuleSet(maxStates int) [][][][]int {
+// ExtractRuleSet extract rule from obj file
+func (reader Reader) ExtractRuleSet() ([][][][]int, int) {
 	file, err := os.Open(reader.Filename)
 	if err != nil {
 		log.Panicf("failed reading file: %s", err)
 	}
 	defer file.Close()
 
-	out := reader.initRuleSet(maxStates)
 	rd := bufio.NewReader(file)
+
+	maxStates := 0
 
 	for {
 		line, err := rd.ReadString('\n')
 
-		if strings.HasPrefix(line, "# Rule : ") {
+		if strings.HasPrefix(line, "# State : ") {
+			sub := strings.Replace(line, "# State : ", "", 1)
+			sub = strings.TrimSuffix(sub, "\n")
+			maxStates, _ = strconv.Atoi(sub)
+		} else if strings.HasPrefix(line, "# Rule : ") {
+			out := reader.initRuleSet(maxStates)
+
 			jrule := strings.Replace(line, "# Rule : ", "", 1)
 			var rule map[string]interface{}
 			json.Unmarshal([]byte(jrule), &rule)
@@ -117,7 +126,7 @@ func (reader ObjReader) ExtractRuleSet(maxStates int) [][][][]int {
 				}
 			}
 
-			return out
+			return out, maxStates
 		}
 
 		if err == io.EOF {
@@ -125,5 +134,5 @@ func (reader ObjReader) ExtractRuleSet(maxStates int) [][][][]int {
 		}
 	}
 
-	return nil
+	return nil, 0
 }

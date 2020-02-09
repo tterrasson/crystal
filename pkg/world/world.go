@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"math/rand"
+	"strconv"
 
 	"github.com/shomali11/util/xconditions"
 	"github.com/tterrasson/crystal/pkg/obj"
@@ -16,15 +17,15 @@ type World struct {
 	Size        int
 	Voxels      [][][]int
 	ActiveCells uint
-	ruleset     *rule.RuleSet
+	Set         *rule.Set
 	seed        [][][]int
 }
 
 // NewWorld create a new world
-func NewWorld(size int, ruleset *rule.RuleSet) *World {
+func NewWorld(size int, Set *rule.Set) *World {
 	world := new(World)
 	world.Size = size
-	world.ruleset = ruleset
+	world.Set = Set
 	world.ActiveCells = 0
 	world.Voxels = make([][][]int, size)
 
@@ -161,7 +162,7 @@ func (world *World) Iterate() {
 					continue
 				}
 
-				newState := world.ruleset.Process(state, faces, edges, corners)
+				newState := world.Set.Process(state, faces, edges, corners)
 
 				if newState != state {
 					newVoxels[x][y][z] = newState
@@ -230,9 +231,9 @@ func (world *World) checkNeighbors(x int, y int, z int) (int, int, int) {
 
 // ExportToFile as obj file
 func (world *World) ExportToFile(filename string) {
-	writer := obj.NewObjWriter()
+	writer := obj.NewWriter()
 
-	ruleBytes, err := json.Marshal(world.ruleset)
+	ruleBytes, err := json.Marshal(world.Set)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -242,6 +243,7 @@ func (world *World) ExportToFile(filename string) {
 		log.Fatal(err)
 	}
 
+	writer.AddComment("State : " + strconv.Itoa(world.Set.MaxStates))
 	writer.AddComment("Rule : " + string(ruleBytes))
 	writer.AddComment("Seed : " + string(seedBytes))
 	writer.AddMtlLib("colors.mtl")

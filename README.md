@@ -15,7 +15,7 @@ $ go build -o bin/search ./cmd/search
 Generate 16 random 5 states cellular automata after (64 iterations).
 
 ```
-$ bin/search -output explore -state 5 -fillseed 0.4 -iteration 64 -nb 16
+$ bin/search -output explore -state 5 -fillseed 0.4 -iteration 64 -nb 16 -worldsize 300
 ```
 
 ### Growing an interesting rule

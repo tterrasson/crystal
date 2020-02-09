@@ -21,20 +21,21 @@ func main() {
 	outputLastOnlyArg := flag.Bool("lastonly", false, "Output only last iteration")
 	worldSizeArg := flag.Int("worldsize", 100, "World size (SxSxS)")
 	outputPathArg := flag.String("output", "explore", "Output path")
+	seedOffsetArg := flag.Int("seedoffset", 0, "Seed offset")
 
 	flag.Parse()
 
 	rand.Seed(time.Now().Unix())
 
-	reader := obj.ObjReader{*inputArg}
-	states := reader.ExtractRuleSet(5)
-	ruleset := rule.RuleSet{states}
+	reader := obj.Reader{*inputArg}
+	rules, maxStates := reader.ExtractRuleSet()
+	ruleset := rule.Set{rules, maxStates}
 	world := world.NewWorld(*worldSizeArg, &ruleset)
 
 	if *randomSeedArg {
-		world.RandomSeed(float32(*fillSeedArg), 5)
+		world.RandomSeed(float32(*fillSeedArg), maxStates)
 	} else {
-		seed := reader.ExtractSeed(*worldSizeArg, 200)
+		seed := reader.ExtractSeed(*worldSizeArg, *seedOffsetArg)
 		world.SetSeed(seed)
 	}
 

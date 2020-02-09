@@ -4,15 +4,17 @@ import (
 	"math/rand"
 )
 
-// RuleSet structure
-type RuleSet struct {
-	States [][][][]int `json:"states"`
+// Set structure
+type Set struct {
+	States    [][][][]int `json:"states"`
+	MaxStates int
 }
 
 // NewRandomRuleSet generate a new random rule set
-func NewRandomRuleSet(chance float32, maxStates int) *RuleSet {
-	ruleset := new(RuleSet)
+func NewRandomRuleSet(chance float32, maxStates int) *Set {
+	ruleset := new(Set)
 	ruleset.States = make([][][][]int, maxStates+1)
+	ruleset.MaxStates = maxStates
 
 	for state := 0; state <= maxStates; state++ {
 		ruleset.States[state] = make([][][]int, 7)
@@ -38,6 +40,6 @@ func NewRandomRuleSet(chance float32, maxStates int) *RuleSet {
 }
 
 // Process the ruleset
-func (ruleset *RuleSet) Process(state int, faces int, edges int, corners int) int {
+func (ruleset *Set) Process(state int, faces int, edges int, corners int) int {
 	return ruleset.States[state][faces][edges][corners]
 }
