@@ -1,11 +1,20 @@
 ## Generate 3D cellular automata
 
+### Building
+
+```
+$ git clone https://github.com/tterrasson/crystal
+$ cd crystal
+$ export GO111MODULE="on"
+$ go build -o bin/grow ./cmd/grow
+$ go build -o bin/search ./cmd/search
+```
+
 ### Looking for new rules
 
 Generate 16 random 5 states cellular automata after (64 iterations).
 
 ```
-$ mkdir -p explore
 $ bin/search -output explore -state 5 -fillseed 0.4 -iteration 64 -nb 16
 ```
 
@@ -14,14 +23,12 @@ $ bin/search -output explore -state 5 -fillseed 0.4 -iteration 64 -nb 16
 #### Output each iterations (for animation)
 
 ```
-$ mkdir -p explore
 $ bin/grow -output explore -input output-XXXXXXX.obj -iteration 128 -worldsize 300
 ```
 
 #### Output only last iteration
 
 ```
-$ mkdir -p explore
 $ bin/grow -output explore -input output-XXXXXXX.obj -lastonly -iteration 128 -worldsize 300
 ```
 
@@ -36,7 +43,6 @@ $ bin/grow -output explore -input output-XXXXXXX.obj -lastonly -iteration 128 -w
 ![demo](https://media.giphy.com/media/ZG0yw17IqGS9yZOGo0/giphy.gif)
 
 ![demo](https://media.giphy.com/media/eMmgOUTYCJRZzGiwbb/giphy.gif)
-
 
 More examples :
 - https://www.youtube.com/watch?v=W0iA-pO_XaU
