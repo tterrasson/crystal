@@ -35,7 +35,7 @@ func main() {
 			world.Iterate()
 		}
 
-		fname := fmt.Sprintf("output-%f-%f.obj", rand.Float64())
+		fname := fmt.Sprintf("output-%f.obj", rand.Float64())
 		fpath := filepath.Join(*outputPathArg, fname)
 		fmt.Printf("Exporting to %s ...\n", fpath)
 		world.ExportToFile(fpath)
