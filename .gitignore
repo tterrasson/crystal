@@ -15,3 +15,6 @@ bin/grow
 
 # Dependency directories
 vendor/
+
+# VSCode settings
+.vscode
