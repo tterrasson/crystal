@@ -25,11 +25,11 @@ func main() {
 
 	rand.Seed(time.Now().Unix())
 
-	ruleset := rule.NewRandomRuleSet(float32(*fillRuleArg), *stateArg)
-	world := world.NewWorld(*worldSizeArg, ruleset)
-	world.RandomSeed(float32(*fillSeedArg), *stateArg)
-
 	for n := 0; n < *nbArg; n++ {
+		ruleset := rule.NewRandomRuleSet(float32(*fillRuleArg), *stateArg)
+		world := world.NewWorld(*worldSizeArg, ruleset)
+		world.RandomSeed(float32(*fillSeedArg), *stateArg)
+
 		for i := 0; i < *iterationArg; i++ {
 			fmt.Printf("Step %d ...\n", i)
 			world.Iterate()
