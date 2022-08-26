@@ -45,5 +45,6 @@ $ bin/grow -output explore -input output-XXXXXXX.obj -lastonly -iteration 128 -w
 ![demo](https://media.giphy.com/media/eMmgOUTYCJRZzGiwbb/giphy.gif)
 
 More examples :
+- https://www.instagram.com/_cellular_automata_/
 - https://www.youtube.com/watch?v=W0iA-pO_XaU
 - https://www.behance.net/gallery/90505477/Cellular-Automata-3D
